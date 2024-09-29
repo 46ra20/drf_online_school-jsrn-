@@ -32,8 +32,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['*','.vercel.app']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://online-school-lr66.onrender.com',
-    'https://online-school-with.onrender.com',
+    # 'https://online-school-lr66.onrender.com',
+    'https://drf-online-school-jsrn-getm.vercel.app',
     'http://127.0.0.1:5500'
 ]
 
@@ -72,7 +72,8 @@ INSTALLED_APPS = [
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:5500'
+    'http://127.0.0.1:5500',
+    'https://drf-online-school-jsrn-getm.vercel.app'
 ]
 
 
@@ -180,7 +181,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-MEDIA_URL=''
+# MEDIA_URL=''
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key fihttp://127.0.0.1:5500/eld type
