@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-d+)ovhi!odq5all2_9#v(4)$zyxdnb05ei9^*6w3-4e98d048t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*','.vercel.app']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://online-school-lr66.onrender.com',
