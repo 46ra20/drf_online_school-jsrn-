@@ -1,0 +1,15 @@
+asgiref
+crispy-bootstrap5
+Django
+django-cors-headers
+django-crispy-forms
+djangorestframework
+pillow
+psycopg
+psycopg2-binary
+python-dotenv
+pytz
+sqlparse
+typing_extensions
+dj-database-url
+whitenoise
