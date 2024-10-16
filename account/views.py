@@ -24,6 +24,7 @@ class UserRegistrationView(APIView):
         # print(serializer.is_valid())
         # if(serializer.errors):
         #     return Response(serializer.errors)
+        print(request.data)
         if serializer.is_valid():
             user = serializer.save()
             print(user)
