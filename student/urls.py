@@ -1,4 +1,4 @@
-from .views import ReviewView,CourseEnrolView,AllReviewView
+from .views import ReviewView,CourseEnrolView,AllReviewView,FavoriteCourseView
 from django.urls import path,include
 from rest_framework.routers import DefaultRouter
 
@@ -14,4 +14,5 @@ urlpatterns = [
     path('enrol/<enrol_by>/',CourseEnrolView.as_view({'get':'list'})),
     path('enrol_create/',CourseEnrolView.as_view({'post':'create'})),
     path('enrol_unenroled/<id>/',CourseEnrolView.as_view({'delete':'destroy'})),
+    path('favorite_course/',FavoriteCourseView.as_view({'get':'list'}))
 ]

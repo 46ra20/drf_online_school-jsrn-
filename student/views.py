@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .serializer import ReviewSerializers,CourseEnrlSerializer
+from .serializer import ReviewSerializers,CourseEnrlSerializer,MostFavoriteCourseSerializer
 from .models import ReviewModel,CourseEnrolModel
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -8,6 +8,7 @@ from course.models import CourseModel
 from course.serializers import CourseSerializer
 from django.contrib.auth.models import User
 from account.models import UserRegistrarionModel
+import operator
 # Create your views here.
 
 class AllReviewView(viewsets.ViewSet):
@@ -112,3 +113,26 @@ class CourseEnrolView(viewsets.ViewSet):
         except(CourseEnrolModel.DoesNotExist):
             course=None
             return Response({'error':'Operation Failed'})
+
+
+class FavoriteCourseView(viewsets.ViewSet):
+    def list(self,request):
+        dictionary = {}
+        data  = {}
+        data_list=[]
+        query = ReviewModel.objects.all()
+        for q in query:
+            if(q.course.pk in dictionary.keys()): 
+                dictionary[q.course.pk]+=int(q.rating)
+                continue
+            dictionary[q.course.pk]=int(q.rating)
+        serializer = MostFavoriteCourseSerializer(query,many=True)
+        
+        for d in serializer.data:
+            if(d['id'] in data.keys()): continue
+            d['ratting']=dictionary[d['id']]
+            data[d['id']]=d
+            data_list.append(d)
+        data_list=sorted(data_list, key=lambda x:x['ratting'],reverse=True)[:4]
+
+        return Response(data_list)
