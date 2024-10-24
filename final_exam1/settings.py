@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'account',
     'course',
-    'student'
+    'student',
+    'ContactUs'
 ]
 
 # REST_FRAMEWORK = {

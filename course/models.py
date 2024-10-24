@@ -16,6 +16,7 @@ class CourseModel(models.Model):
     learing_outcomes = models.TextField()
     course_duration =models.CharField(max_length=100)
     prerequisites=models.TextField(blank=True)
+    course_link = models.CharField(max_length=400,default='https://www.youtube.com/watch?v=qY90Gi1XrSA')
     image = models.URLField(blank=True,null=True)
     date = models.DateTimeField(auto_now_add=True)
     price = models.DecimalField(max_digits=5,decimal_places=2)

@@ -136,3 +136,25 @@ def GetUserDetails(request,pk):
     #     return Response(serializer.data)
     # raise Http404
     return JsonResponse(context)
+
+def ResetPassword(request,email):
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return JsonResponse({"message":"We are sorry we couldn't find any account with this email."})
+    
+    if(user):
+        print(user)
+        token = default_token_generator.make_token[user]
+        uid = urlsafe_base64_decode(user.pk)
+        subject = "Reset your password."
+        link = f'account/password_reset_/{token}/{uid}/'
+
+        try:
+            email_body = EmailMultiAlternatives(subject,'',to=user.email)
+            email_body.attach_alternative(link,'html/text')
+            email_body.send()
+        except:
+            return JsonResponse({"message":"Email is not valid."})
+
+    return JsonResponse({"message":"Please check your email for reset your password."})
