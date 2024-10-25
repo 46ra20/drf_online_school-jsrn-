@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ReviewModel,CourseEnrolModel
+from .models import ReviewModel,CourseEnrolModel,User
 from course.models import CourseModel
 
 class ReviewSerializers(serializers.ModelSerializer):

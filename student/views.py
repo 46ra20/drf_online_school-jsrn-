@@ -9,6 +9,7 @@ from course.serializers import CourseSerializer
 from django.contrib.auth.models import User
 from account.models import UserRegistrarionModel
 import operator
+from django.db.models import Q
 # Create your views here.
 
 class AllReviewView(viewsets.ViewSet):
@@ -136,3 +137,23 @@ class FavoriteCourseView(viewsets.ViewSet):
         data_list=sorted(data_list, key=lambda x:x['ratting'],reverse=True)[:4]
 
         return Response(data_list)
+
+
+class MyStudentsViews(viewsets.ViewSet):
+    def list(self,request,userId):
+        students_id = []
+        student_list = []
+        courses = CourseEnrolModel.objects.all()
+        
+        for course in courses:
+            if((course.enrol_course.user.pk==int(userId)) and (course.enrol_by.pk not in students_id)):
+                students_id.append(course.enrol_by.pk)
+        print(User.objects.get(pk=int(students_id[0])))
+        for student in student_list:
+            query = User.objects.get(pk=int(student))
+            print(query)
+            student_list.append(query)
+        print(students_id)
+        print(student_list)
+
+        return Response({"data":student_list})
