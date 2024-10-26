@@ -147,7 +147,7 @@ This project is licensed under the **MIT License**. See the `LICENSE` file for m
 For any inquiries or issues, feel free to contact me:
 
 - **Md Rakib Bhuiyan**  
-- Email: [your-rakib2046.md@gmail.com]  
+- Email: [rakib2046.md@gmail.com]  
 - GitHub: [https://github.com/46ra20](https://github.com/46ra20)
 
 ```
