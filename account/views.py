@@ -32,7 +32,7 @@ class UserRegistrationView(APIView):
             uid = urlsafe_base64_encode(force_bytes(user[0].pk))
 
             email_subject = 'Confirm your email.'
-            confirm_link = f'https://online-school-lr66.onrender.com/account/active/{uid}/{token}/'
+            confirm_link = f'https://drf-online-school-jsrn-getm.vercel.app/account/active/{uid}/{token}/'
             email_body=render_to_string('./account/confirm_email.html',{'confirm_link':confirm_link})
             try:
                 email = EmailMultiAlternatives(email_subject,'',to=[user[0].email])
@@ -55,9 +55,9 @@ def ActiveAccount(request,uid64,token):
     if user is not None and default_token_generator.check_token(user,token):
         user.is_active=True
         user.save()
-        return redirect('https://668d5b1781675397e8330c4f--stellar-cheesecake-075991.netlify.app/login.html')
+        return redirect('https://46ra20.github.io/DRF_FrontEnd/login.html/login.html')
     else:
-        return redirect('https://668d5b1781675397e8330c4f--stellar-cheesecake-075991.netlify.app/singup.html')
+        return redirect('https://46ra20.github.io/DRF_FrontEnd/singup.html')
 
 
 class UserLoginView(APIView):

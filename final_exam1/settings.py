@@ -34,7 +34,8 @@ ALLOWED_HOSTS = ['*','.vercel.app']
 CSRF_TRUSTED_ORIGINS = [
     # 'https://online-school-lr66.onrender.com',
     'https://drf-online-school-jsrn-getm.vercel.app',
-    'http://127.0.0.1:5500'
+    'http://127.0.0.1:5500',
+    'https://sandbox.sslcommerz.com'
 ]
 
 # Application definition
@@ -70,15 +71,16 @@ INSTALLED_APPS = [
 #     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination', 
 # }
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
+# Access-Control-Allow-Origin  = https://sandbox.sslcommerz.com
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5500',
-    'https://drf-online-school-jsrn-getm.vercel.app'
+    'https://drf-online-school-jsrn-getm.vercel.app',
+    'https://sandbox.sslcommerz.com'
 ]
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -87,8 +89,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
 
 ROOT_URLCONF = 'final_exam1.urls'
 

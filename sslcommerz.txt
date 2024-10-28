@@ -1,0 +1,4 @@
+userid = 46ra20
+
+store_id = jsrns671f12dd2f84d
+api_key = jsrns671f12dd2f84d@ssl
