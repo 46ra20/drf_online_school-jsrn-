@@ -1,6 +1,6 @@
-from django.shortcuts import render,redirect,HttpResponseRedirect
+from django.shortcuts import render,redirect,HttpResponseRedirect,HttpResponse
 from .serializer import ReviewSerializers,CourseEnrlSerializer,MostFavoriteCourseSerializer
-from .models import ReviewModel,CourseEnrolModel
+from .models import ReviewModel,CourseEnrolModel,CourseModel
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -11,6 +11,8 @@ from account.models import UserRegistrarionModel
 import operator
 from django.db.models import Q
 from sslcommerz_lib import SSLCOMMERZ
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 
 # Create your views here.
 
@@ -162,16 +164,25 @@ class MyStudentsViews(viewsets.ViewSet):
         return Response({"data":student_list})
 
 
-def PaymentMethodIntegration(request):
-    print('Hello')
-    print(request.user)
+def PaymentMethodIntegration(request,userId,courseId):
+    
+    try:
+        course = CourseModel.objects.get(pk=courseId)
+    except CourseModel.DoesNotExist:
+        return Response({"message":"Course doesn't exist."})
+    
+    try:
+        user = User.objects.get(pk=userId)
+    except User.DoesNotExist:
+        return Response({"message":"User doesn't exist"})
+
     settings = { 'store_id': 'jsrns671f12dd2f84d', 'store_pass': 'jsrns671f12dd2f84d@ssl', 'issandbox': True }
     sslcz = SSLCOMMERZ(settings)
     post_body = {}
-    post_body['total_amount'] = 100.26
+    post_body['total_amount'] = course.price
     post_body['currency'] = "BDT"
-    post_body['tran_id'] = "12345"
-    post_body['success_url'] = "https://46ra20.github.io/DRF_FrontEnd/myLearing.html"
+    post_body['tran_id'] = urlsafe_base64_encode(force_bytes(userId))+urlsafe_base64_encode(force_bytes(courseId))
+    post_body['success_url'] = "http://127.0.0.1:8000/course/payment_success/"
     post_body['fail_url'] = "https://46ra20.github.io/DRF_FrontEnd/myLearing.html"
     post_body['cancel_url'] = "https://46ra20.github.io/DRF_FrontEnd/myLearing.html"
     post_body['emi_option'] = 0
@@ -184,11 +195,18 @@ def PaymentMethodIntegration(request):
     post_body['shipping_method'] = "NO"
     post_body['multi_card_name'] = ""
     post_body['num_of_item'] = 1
-    post_body['product_name'] = "Test"
-    post_body['product_category'] = "Test Category"
+    post_body['product_name'] = course.title
+    post_body['product_category'] = course.department
     post_body['product_profile'] = "general"
 
 
     response = sslcz.createSession(post_body) # API response
-    print(response)
-    return redirect(response['GatewayPageURL'])
+    # print(response)
+    # redirect(response['GatewayPageURL'])
+    if response['status'] == 'SUCCESS':
+        return HttpResponseRedirect(response['GatewayPageURL'])
+    else:
+        return HttpResponse("Payment initiation failed. Please try again later.")
+    
+def Payment_Success(request):
+    return HttpResponse("Hello")

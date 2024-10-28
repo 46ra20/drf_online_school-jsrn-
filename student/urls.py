@@ -1,4 +1,4 @@
-from .views import ReviewView,CourseEnrolView,AllReviewView,FavoriteCourseView,MyStudentsViews,PaymentMethodIntegration
+from .views import ReviewView,CourseEnrolView,AllReviewView,FavoriteCourseView,MyStudentsViews,PaymentMethodIntegration,Payment_Success
 from django.urls import path,include
 from rest_framework.routers import DefaultRouter
 
@@ -16,5 +16,6 @@ urlpatterns = [
     path('enrol_unenroled/<id>/',CourseEnrolView.as_view({'delete':'destroy'})),
     path('favorite_course/',FavoriteCourseView.as_view({'get':'list'})),
     path('my_student/<userId>/',MyStudentsViews.as_view({'get':'list'})),
-    path('payment_method/',PaymentMethodIntegration)
+    path('payment_method/<userId>/<courseId>/',PaymentMethodIntegration),
+    path('payment_success/',Payment_Success)
 ]

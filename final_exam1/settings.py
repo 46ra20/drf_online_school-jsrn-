@@ -34,7 +34,8 @@ ALLOWED_HOSTS = ['*','.vercel.app']
 CSRF_TRUSTED_ORIGINS = [
     # 'https://online-school-lr66.onrender.com',
     'https://drf-online-school-jsrn-getm.vercel.app',
-    'http://127.0.0.1:5500',
+    'http://127.0.0.1:8000',
+    'http://127.0.0.1:8000',
     'https://sandbox.sslcommerz.com'
 ]
 
@@ -78,6 +79,28 @@ CORS_ALLOWED_ORIGINS = [
     'https://sandbox.sslcommerz.com'
 ]
 
+# CORS_ALLOW_METHODS
+CORS_ALLOW_METHODS=[
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+]
+
+CORS_ALLOW_HEADERS = [
+    'authorization',
+    'content-type',
+    'x-requested-with',
+    'accept',
+    'origin',
+    'user-agent',
+    'dnt',
+    'cache-control',
+    'x-csrftoken',
+    'x-frame-options',
+]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
