@@ -27,6 +27,7 @@ class ReviewModel(models.Model):
 
 class CourseEnrolModel(models.Model):
     date = models.DateTimeField(auto_now_add=True)
+    transaction_id = models.CharField(max_length=50,default='')
     enrol_by = models.ForeignKey(User,on_delete=models.CASCADE)
     enrol_course = models.ForeignKey(CourseModel,on_delete=models.CASCADE)
 

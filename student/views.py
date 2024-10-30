@@ -13,6 +13,7 @@ from django.db.models import Q
 from sslcommerz_lib import SSLCOMMERZ
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -81,7 +82,7 @@ class CourseEnrolView(viewsets.ViewSet):
         serializer =CourseEnrlSerializer(courses,many=True)
         course_details = []
         for cr in serializer.data:
-            print(cr['enrol_course'])
+            # print(cr['enrol_course'])
             try:
                 course = CourseModel.objects.get(pk=cr['enrol_course'])
                 sr = CourseSerializer(course)
@@ -103,7 +104,7 @@ class CourseEnrolView(viewsets.ViewSet):
             is_enroled = CourseEnrolModel.objects.filter(enrol_course=courseNo,enrol_by=enrolBy)
         except(CourseEnrolModel.DoesNotExist):
             is_enroled=False
-        print(is_enroled)
+
         if not is_enroled:
             serializer =CourseEnrlSerializer(data=request.data)
             if serializer.is_valid():
@@ -163,7 +164,7 @@ class MyStudentsViews(viewsets.ViewSet):
 
         return Response({"data":student_list})
 
-
+@csrf_exempt
 def PaymentMethodIntegration(request,userId,courseId):
     
     try:
@@ -181,10 +182,10 @@ def PaymentMethodIntegration(request,userId,courseId):
     post_body = {}
     post_body['total_amount'] = course.price
     post_body['currency'] = "BDT"
-    post_body['tran_id'] = urlsafe_base64_encode(force_bytes(userId))+urlsafe_base64_encode(force_bytes(courseId))
-    post_body['success_url'] = "http://127.0.0.1:8000/course/payment_success/"
-    post_body['fail_url'] = "https://46ra20.github.io/DRF_FrontEnd/myLearing.html"
-    post_body['cancel_url'] = "https://46ra20.github.io/DRF_FrontEnd/myLearing.html"
+    post_body['tran_id'] = urlsafe_base64_encode(force_bytes(user.pk))+urlsafe_base64_encode(force_bytes(course.pk))
+    post_body['success_url'] = f"http://127.0.0.1:8000/course/payment_success/{user.pk}/{course.pk}/{post_body['tran_id']}/"
+    post_body['fail_url'] = f"http://127.0.0.1:8000/course/payment_fail/{course.pk}/"
+    post_body['cancel_url'] = f"http://127.0.0.1:8000/course/payment_cancel/{course.pk}/"
     post_body['emi_option'] = 0
     post_body['cus_name'] = "test"
     post_body['cus_email'] = "test@test.com"
@@ -207,6 +208,17 @@ def PaymentMethodIntegration(request,userId,courseId):
         return HttpResponseRedirect(response['GatewayPageURL'])
     else:
         return HttpResponse("Payment initiation failed. Please try again later.")
+
+@csrf_exempt
+def Payment_Success(request,userId,courseId,transaction_id):
     
-def Payment_Success(request):
-    return HttpResponse("Hello")
+    CourseEnrolModel.objects.create(transaction_id=transaction_id,enrol_by=User.objects.get(pk=userId),enrol_course=CourseModel.objects.get(pk=courseId))
+    return render(request,"success.html")
+
+@csrf_exempt
+def Payment_fail(request,courseId):
+    return render(request,'fail.html',{'data':courseId})
+
+@csrf_exempt
+def Payment_cancel(request,courseId):
+    return render(request,'cancel.html',{'data':courseId})
