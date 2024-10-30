@@ -183,9 +183,9 @@ def PaymentMethodIntegration(request,userId,courseId):
     post_body['total_amount'] = course.price
     post_body['currency'] = "BDT"
     post_body['tran_id'] = urlsafe_base64_encode(force_bytes(user.pk))+urlsafe_base64_encode(force_bytes(course.pk))
-    post_body['success_url'] = f"http://127.0.0.1:8000/course/payment_success/{user.pk}/{course.pk}/{post_body['tran_id']}/"
-    post_body['fail_url'] = f"http://127.0.0.1:8000/course/payment_fail/{course.pk}/"
-    post_body['cancel_url'] = f"http://127.0.0.1:8000/course/payment_cancel/{course.pk}/"
+    post_body['success_url'] = f"https://drf-online-school-jsrn-getm.vercel.app/course/payment_success/{user.pk}/{course.pk}/{post_body['tran_id']}/"
+    post_body['fail_url'] = f"https://drf-online-school-jsrn-getm.vercel.app/course/payment_fail/{course.pk}/"
+    post_body['cancel_url'] = f"https://drf-online-school-jsrn-getm.vercel.app/course/payment_cancel/{course.pk}/"
     post_body['emi_option'] = 0
     post_body['cus_name'] = "test"
     post_body['cus_email'] = "test@test.com"
